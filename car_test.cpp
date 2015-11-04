@@ -2,7 +2,9 @@
 #include <iostream>//cout and cin 
 #include <stdlib.h>
 #include <stdio.h>// to use printf
+#include <cstdlib>
 using namespace std;
+int g_kSize = 1024;
 
 
 void menu()
@@ -63,11 +65,67 @@ void showVehicleInventory(string models[],int years[],double prices[], int num_c
 		//c_str() convert c++ string to c string(needed because printf is a c function)
 	}
 }
+void quit()
+{
+	cout << "<see you again>\n"; 
+	exit(0);
+}
+int loadVehicleInventory(string model_list[], int year_list[], double price_list[])
+{
+	string buffer;
+	string make_model;
+	int year = 0;
+	double price = 0;
+	int count = 0;
+
+	cout << "WELCOME.....\n\n";
+	//Pause(); //I do not know about lab2. so.... 
+	while(1)
+	{
+		cout << "Enter make_model;year;price[Ford Taurus;2014;14578.99] or [END;] to quit";
+		//read model 
+		getline(cin, buffer,';');
+		if ((buffer=="END") || (count == g_kSize))
+		{
+			break;
+		}
+		make_model = buffer;
+		//read year
+		getline(cin, buffer, ';');
+		year = atoi(buffer.c_str());
+		//read price 
+		getline(cin, buffer, ';');
+		//convert to buffer str to double 
+		price = atof(buffer.c_str());
+		//add info to each array
+		model_list[count] = make_model;
+		year_list[count] = year;
+		price_list[count] = price;
+		count = count + 1;
+	}
+	return count;
+}
+
+void searchByMakeModel(string model_list[], int year_list[], double price_list[])
+{
+	string token;
+	string make; 
+	string model;
+	cout << "Enter make and model:";
+	getline(cin,token,' ');
+	make = token;
+	getline(cin,token,' ');//when test need to add extra space and click enter
+	model = token;
+	cout << make + " "+model + "\n";
+	
+
+
+}
+
 int main(int argc, char const *argv[])
 {
 	
 	//cout << "hello world\n";
-	int g_kSize = 1024;
 	int num_cars = 0;
 	string model_list[g_kSize];
 	int year_list[g_kSize];
@@ -78,6 +136,8 @@ int main(int argc, char const *argv[])
 	showVehicleInventory(model_list, year_list,price_list, 8);
 	//int c = getUserChoice();
 	//printf("choice: %d\n",c);
+	searchByMakeModel(model_list, year_list,price_list);
+	quit();
 
 	return 0;
 }
